@@ -51,6 +51,7 @@ def build(bld):
 		'../../public/tier1',
 		'../../vgui2/include',
 		'../../vgui2/controls',
+		'../../thirdparty/protobuf-2.6.1/src',
 		'../shared'
 	]
 

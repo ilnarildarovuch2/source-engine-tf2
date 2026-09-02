@@ -19,6 +19,7 @@
 #include "icvar.h"
 #include "tier0/dbg.h"
 #include "Color.h"
+#include "cdll_int.h"
 #if defined( _X360 )
 #include "xbox/xbox_console.h"
 #endif
@@ -414,6 +415,12 @@ bool CCommand::Tokenize( const char *pCommand, characterset_t *pBreakSet )
 	int nArgvBufferSize = 0;
 	while ( bufParse.IsValid() && ( m_nArgc < COMMAND_MAX_ARGC ) )
 	{
+		if ( nArgvBufferSize >= COMMAND_MAX_LENGTH )
+		{
+			Reset();
+			return false;
+		}
+
 		char *pArgvBuf = &m_pArgvBuffer[nArgvBufferSize];
 		int nMaxLen = COMMAND_MAX_LENGTH - nArgvBufferSize;
 		int nStartGet = bufParse.TellGet();
@@ -422,7 +429,7 @@ bool CCommand::Tokenize( const char *pCommand, characterset_t *pBreakSet )
 			break;
 
 		// Check for overflow condition
-		if ( nMaxLen == nSize )
+		if ( nSize >= nMaxLen )
 		{
 			Reset();
 			return false;
@@ -457,7 +464,14 @@ bool CCommand::Tokenize( const char *pCommand, characterset_t *pBreakSet )
 		}
 
 		nArgvBufferSize += nSize + 1;
+
 		Assert( nArgvBufferSize <= COMMAND_MAX_LENGTH );
+
+		if ( nArgvBufferSize > COMMAND_MAX_LENGTH )
+		{
+			Reset();
+			return false;
+		}
 	}
 
 	return true;
@@ -889,11 +903,16 @@ bool ConVar::ClampValue( float& value )
 	return false;
 }
 
+void ConVar::InternalSetFloatValue( float fNewValue )
+{
+	InternalSetFloatValue2( fNewValue );
+}
+
 //-----------------------------------------------------------------------------
 // Purpose: 
 // Input  : *value - 
 //-----------------------------------------------------------------------------
-void ConVar::InternalSetFloatValue( float fNewValue, bool bForce /*= false */ )
+void ConVar::InternalSetFloatValue2( float fNewValue, bool bForce /*= false */ )
 {
 	if ( fNewValue == m_fValue && !bForce )
 		return;
@@ -972,6 +991,13 @@ void ConVar::InternalSetIntValue( int nValue )
 	}
 }
 
+void ConVar::Create_Vtbl( const char *pName, const char *pDefaultValue, int flags /* = 0 */,
+							const char *pHelpString /* = 0 */, bool bMin /* = false */, float fMin /* = 0.0 */,
+							bool bMax /* = false */, float fMax /* = false */, FnChangeCallback_t callback /* = 0 */ )
+{
+	Create( pName, pDefaultValue, flags, pHelpString, bMin, fMin, bMax, fMax, false, 0.0, false, 0.0, callback );
+}
+
 //-----------------------------------------------------------------------------
 // Purpose: Private creation
 //-----------------------------------------------------------------------------
@@ -1031,7 +1057,7 @@ void ConVar::SetValue(const char *value)
 void ConVar::SetValue( float value )
 {
 	ConVar *var = ( ConVar * )m_pParent;
-	var->InternalSetFloatValue( value );
+	var->InternalSetFloatValue2( value );
 }
 
 //-----------------------------------------------------------------------------
@@ -1149,6 +1175,66 @@ void ConVar::SetDefault( const char *pszDefault )
 	m_pszDefaultValue = pszDefault ? pszDefault : "";
 	Assert( m_pszDefaultValue );
 }
+
+// Josh:
+// See comments in convar.h about UIConVarRef
+// and it's purpose/implementation.
+UIConVarRef::UIConVarRef( IVEngineClient *pEngine, const char *pName, bool bIgnoreMissing )
+	: ConVarRef( pName, bIgnoreMissing )
+	, m_pEngine( pEngine )
+{
+}
+
+void UIConVarRef::Init( IVEngineClient *pEngine, const char *pName, bool bIgnoreMissing )
+{
+	ConVarRef::Init( pName, bIgnoreMissing );
+	m_pEngine = pEngine;
+}
+
+void UIConVarRef::SetValue( float flValue )
+{
+	if ( !IsValid() )
+		return;
+
+	if ( m_pEngine )
+	{
+		char szEngineCommand[ 256 ];
+		V_sprintf_safe( szEngineCommand, "%s %f\n", GetName(), flValue );
+		m_pEngine->ExecuteClientCmd( szEngineCommand );
+	}
+	else if ( CanSetWithoutEngine() )
+	{
+		ConVarRef::SetValue( flValue );
+	}
+}
+
+void UIConVarRef::SetValue( int nValue )
+{
+	if ( !IsValid() )
+		return;
+
+	if ( m_pEngine )
+	{
+		char szEngineCommand[256];
+		V_sprintf_safe( szEngineCommand, "%s %d\n", GetName(), nValue );
+		m_pEngine->ExecuteClientCmd( szEngineCommand );
+	}
+	else if ( CanSetWithoutEngine() )
+	{
+		ConVarRef::SetValue( nValue );
+	}
+}
+
+void UIConVarRef::SetValue( bool bValue )
+{
+	SetValue( bValue ? 1 : 0 );
+}
+
+bool UIConVarRef::CanSetWithoutEngine()
+{
+	return !IsFlagSet( FCVAR_UNREGISTERED | FCVAR_DEVELOPMENTONLY | FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_SPONLY );
+}
+
 
 //-----------------------------------------------------------------------------
 // This version is simply used to make reading convars simpler.

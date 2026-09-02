@@ -58,7 +58,7 @@ public:
 	void				SetCritical( bool bCritical ) { m_bCritical = bCritical; }
 	virtual int			GetDamageType();
 
-	virtual void		SetLauncher( CBaseEntity *pLauncher ) OVERRIDE { m_hLauncher = pLauncher; BaseClass::SetLauncher( pLauncher ); }
+	virtual void		SetLauncher( CBaseEntity *pLauncher ) OVERRIDE { m_hLauncher = pLauncher; // BaseClass::SetLauncher( pLauncher ); // Patched: merged engine C_BaseGrenade lacks this }
 	CBaseEntity			*GetLauncher( void ) { return m_hLauncher; }
 	virtual void		IncrementDeflected( void ) { m_iDeflected++; }
 	void				ResetDeflected( void ) { m_iDeflected = 0; }

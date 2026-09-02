@@ -77,7 +77,7 @@ public:
 	virtual bool			ShouldShowToolTip( void	) { return true; }
 	virtual bool			InitializeAsClientEntity( const char *pszModelName, RenderGroup_t renderGroup );
 	virtual bool			OnInternalDrawModel( ClientModelRenderInfo_t *pInfo );
-	virtual IMaterial		*GetEconWeaponMaterialOverride( int iTeam ) OVERRIDE;
+	virtual IMaterial		*GetEconWeaponMaterialOverride( int iTeam );
 	virtual void			FireEvent( const Vector& origin, const QAngle& angles, int event, const char *options );
 	virtual bool			OnFireEvent( C_BaseViewModel *pViewModel, const Vector& origin, const QAngle& angles, int event, const char *options );
 	bool					InternalFireEvent( const Vector& origin, const QAngle& angles, int event, const char *options );

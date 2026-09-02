@@ -22,7 +22,7 @@
 #pragma warning(push)
 #pragma warning( disable:4512 )
 #include <tier0/valve_minmax_off.h>
-#include "steammessages.pb.h"
+#include "../gcsdk/steammessages.pb.h"
 #include <tier0/valve_minmax_on.h>
 #pragma warning(pop)
 
@@ -117,7 +117,7 @@ public:
 	const CMsgProtoBufHeader &ConstHdr() const	{ return *m_pProtoBufHdr; }
 
 	MsgType_t	GetEMsg()			const		{ return m_eMsg & (~k_EMsgProtoBufFlag); }
-	CSteamID	GetClientSteamID()	const		{ return CSteamID( m_pProtoBufHdr->client_steam_id() ); }
+	CSteamID GetClientSteamID() const { return CSteamID( static_cast<uint64>( m_pProtoBufHdr->client_steam_id() ) ); }
 	JobID_t		GetJobIDTarget()	const		{ return m_pProtoBufHdr->job_id_target(); }
 	JobID_t		GetJobIDSource()	const		{ return m_pProtoBufHdr->job_id_source(); }
 	AppId_t		GetSourceAppID()	const		{ return m_pProtoBufHdr->source_app_id(); }

@@ -48,6 +48,7 @@ def build(bld):
 		'../shared',
 		'../../utils/common',
 		'../shared/econ',
+		'../../thirdparty/protobuf-2.6.1/src',
 		'NextBot',
 		'../../common',
 		'../../public/tier0',

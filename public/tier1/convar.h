@@ -387,11 +387,15 @@ private:
 	// Called by CCvar when the value of a var is changing.
 	virtual void				InternalSetValue(const char *value);
 	// For CVARs marked FCVAR_NEVER_AS_STRING
-	virtual void				InternalSetFloatValue( float fNewValue, bool bForce = false );
+	virtual void				InternalSetFloatValue( float fNewValue );
 	virtual void				InternalSetIntValue( int nValue );
 
 	virtual bool				ClampValue( float& value );
 	virtual void				ChangeStringValue( const char *tempVal, float flOldValue );
+
+	virtual void				Create_Vtbl( const char *pName, const char *pDefaultValue, int flags = 0,
+									const char *pHelpString = 0, bool bMin = false, float fMin = 0.0,
+									bool bMax = false, float fMax = false, FnChangeCallback_t callback = 0 );
 
 	void						Create( const char *pName, const char *pDefaultValue, int flags = 0,
 									const char *pHelpString = 0, bool bMin = false, float fMin = 0.0,
@@ -404,6 +408,12 @@ private:
 	// Used internally by OneTimeInit to initialize.
 	virtual void				Init();
 	int GetFlags() { return m_pParent->m_nFlags; }
+	
+	virtual void				InternalSetFloatValue2( float fNewValue, bool bForce = false );
+	inline	void				InternalSetFloatValue( float fNewValue, bool bForce )
+	{
+		this->InternalSetFloatValue2( fNewValue, bForce );
+	}
 private:
 
 	// This either points to "this" or it points to the original declaration of a ConVar.
@@ -428,7 +438,10 @@ private:
 	float						m_fMinVal;
 	bool						m_bHasMax;
 	float						m_fMaxVal;
-
+	
+	// Call this function when ConVar changes
+	FnChangeCallback_t			m_fnChangeCallback;
+	
 	// Min/Max values for competitive.
 	bool						m_bHasCompMin;
 	float						m_fCompMinVal;
@@ -436,10 +449,6 @@ private:
 	float						m_fCompMaxVal;
 
 	bool						m_bCompetitiveRestrictions;
-
-	
-	// Call this function when ConVar changes
-	FnChangeCallback_t			m_fnChangeCallback;
 };
 
 
@@ -609,6 +618,51 @@ FORCEINLINE_CVAR const char *ConVarRef::GetDefault() const
 	return m_pConVarState->m_pszDefaultValue;
 }
 
+class IVEngineClient;
+// Josh:
+// This class is here to solve the problem
+// that we had VGUI CVar sliders, etc changing sv_cheats
+// and other CVars forcefully.
+//
+// This uses engine->CLientCmd_Unrestricted instead of
+// setting the convar's value directly, so it goes
+// through all of the filtering code.
+//
+// In lieu of IVEngineClient being present,
+// it will fall back to never being able to set
+// FCVAR_UNREGISTERED, FCVAR_DEVELOPMENTONLY, FCVAR_REPLICATED, FCVAR_CHEAT or FCVAR_SPONLY
+// commands to allow tools like Hammer to still use this.
+//
+// We check that the main ConVar ref (that returns stuff like GetString, GetFloat
+// has a valid convar so we don't end up sending a random string of junk via
+// ClientCmd_Unrestricted, and we have no support for setting strings directly
+// to just avoid the whole escaping nightmare.
+//
+// If you want to quickly audit potential ConVarRefs
+// that are not using string literals, you can use the
+//   ConVarRef.*\([^"][^"]
+// regex.
+class UIConVarRef : public ConVarRef
+{
+public:
+	UIConVarRef( IVEngineClient *pEngine, const char *pName, bool bIgnoreMissing = false );
+
+	void Init( const char *pName, bool bIgnoreMissing ) = delete;
+	void Init( IVEngineClient *pEngine, const char *pName, bool bIgnoreMissing );
+	IConVar *GetLinkedConVar() = delete;
+
+	// Josh:
+	// No setting of strings plox!
+	void SetValue( const char *pValue ) = delete;
+	void SetValue( float flValue );
+	void SetValue( int nValue );
+	void SetValue( bool bValue );
+
+private:
+	bool CanSetWithoutEngine();
+
+	IVEngineClient *m_pEngine;
+};
 
 //-----------------------------------------------------------------------------
 // Called by the framework to register ConCommands with the ICVar
@@ -627,9 +681,7 @@ void ConVar_PrintDescription( const ConCommandBase *pVar );
 //-----------------------------------------------------------------------------
 // Purpose: Utility class to quickly allow ConCommands to call member methods
 //-----------------------------------------------------------------------------
-#ifdef _WIN32
 #pragma warning (disable : 4355 )
-#endif
 
 template< class T >
 class CConCommandMemberAccessor : public ConCommand, public ICommandCallback, public ICommandCompletionCallback
@@ -676,9 +728,8 @@ private:
 	FnMemberCommandCompletionCallback_t m_CompletionFunc;
 };
 
-#ifdef _WIN32
 #pragma warning ( default : 4355 )
-#endif
+
 
 //-----------------------------------------------------------------------------
 // Purpose: Utility macros to quicky generate a simple console command

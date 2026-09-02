@@ -31,7 +31,7 @@ float CollateAttributeValues( const CEconItemAttributeDefinition *pAttrDef1, con
 //  and asserts the return value is == to dynamic_cast< IHasAttributes * >( pEntity ).
 inline IHasAttributes *GetAttribInterface( CBaseEntity *pEntity )
 {
-	IHasAttributes *pAttribInterface = pEntity ? pEntity->GetHasAttributesInterfacePtr() : NULL;
+	IHasAttributes *pAttribInterface = dynamic_cast<IHasAttributes*>(pEntity);
 	// If this assert hits it most likely means that m_pAttribInterface has not been set
 	//  in the leaf class constructor for this object. See CTFPlayer::CTFPlayer() for an
 	//  example.

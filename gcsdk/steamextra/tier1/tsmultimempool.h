@@ -27,6 +27,14 @@
 #include "tier1/mempool.h"
 #include "tier1/tsmempool.h"
 
+enum MemoryPoolGrowType_t
+{
+	UTLMEMORYPOOL_GROW_NONE=0,		// Don't allow new blobs.
+	UTLMEMORYPOOL_GROW_FAST=1,		// New blob size is numElements * (i+1)  (ie: the blocks it allocates
+									// get larger and larger each time it allocates one).
+	UTLMEMORYPOOL_GROW_SLOW=2		// New blob size is numElements.
+};
+
 //-----------------------------------------------------------------------------
 // Purpose: A container of a range of mem pool sizes (for network buffers for example) 
 //			and a raw alloc capability (for sizes greater than any contained mem pool).
