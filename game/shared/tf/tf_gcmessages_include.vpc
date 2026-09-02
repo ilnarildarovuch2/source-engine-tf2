@@ -1,0 +1,29 @@
+$Project
+{
+	$Folder "Source Files"
+	{
+		$File "$SRCDIR\game\shared\tf\tf_gcmessages.cpp"
+	}
+
+	$Folder "Header Files"
+	{
+		$File "$SRCDIR\game\shared\tf\tf_gcmessages.h"
+		$File "$SRCDIR\game\shared\tf\tf_matchmaking_scoring.h"
+	}
+
+	$Folder "Protobuf Files"
+	{
+		$DynamicFile "$GENERATED_PROTO_DIR\tf_gcmessages.pb.h"
+		$DynamicFile "$GENERATED_PROTO_DIR\tf_gcmessages.pb.cc" [!$OSXALL]
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+	}
+
+}

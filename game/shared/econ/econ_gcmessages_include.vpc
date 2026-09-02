@@ -1,0 +1,15 @@
+$Project
+{
+	$Folder "Protobuf Files"
+	{
+		$File "$SRCDIR/game/shared/econ/econ_gcmessages.pb.cc"
+	}
+
+	$Configuration
+	{
+		$Compiler
+		{
+			$Create/UsePrecompiledHeader "Not Using Precompiled Headers"
+		}
+	}
+}
