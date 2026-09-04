@@ -30,21 +30,21 @@ public:
 	CTFDroppedWeapon();
 	~CTFDroppedWeapon();
 
-	virtual void Spawn() OVERRIDE;
+	virtual void Spawn();
 
 #ifdef CLIENT_DLL
-	virtual void OnPreDataChanged( DataUpdateType_t updateType ) OVERRIDE;
-	virtual void OnDataChanged( DataUpdateType_t updateType ) OVERRIDE;
-	virtual void ClientThink() OVERRIDE;
+	virtual void OnPreDataChanged( DataUpdateType_t updateType );
+	virtual void OnDataChanged( DataUpdateType_t updateType );
+	virtual void ClientThink();
 
 	// target id
-	virtual bool IsVisibleToTargetID( void ) const OVERRIDE;
+	virtual bool IsVisibleToTargetID( void ) const;
 
 	// Draw Attachment models
 	virtual bool			OnInternalDrawModel( ClientModelRenderInfo_t *pInfo );
 
-	virtual IMaterial		*GetEconWeaponMaterialOverride( int iTeam ) OVERRIDE;
-	virtual void			ModifyEmitSoundParams( EmitSound_t &params ) OVERRIDE;
+	virtual IMaterial		*GetEconWeaponMaterialOverride( int iTeam );
+	virtual void			ModifyEmitSoundParams( EmitSound_t &params );
 #endif // CLIENT_DLL
 
 #ifdef GAME_DLL

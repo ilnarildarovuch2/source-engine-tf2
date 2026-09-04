@@ -28,6 +28,8 @@ class C_TFPlayer;
 class CTFPlayer;
 #endif
 
+#define MAX_PLAYERS 33
+#define MAX_PLAYERS_ARRAY_SAFE MAX_PLAYERS
 
 //=============================================================================
 //

@@ -14,7 +14,6 @@
 #include "tf_gcmessages.h"
 #include "tf_matchmaking_shared.h"
 #include "playergroup.h"
-#include "tier1/utlrange.h"
 #include "lobby.h"
 #include "steam/steamclientpublic.h"
 

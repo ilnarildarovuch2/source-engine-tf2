@@ -160,15 +160,15 @@ public:
 	CRobotLocomotion( INextBot *bot ) : NextBotGroundLocomotion( bot ) { }
 	virtual ~CRobotLocomotion() { }
 
-	virtual float GetGroundSpeed() const OVERRIDE;
-	virtual float GetRunSpeed( void ) const OVERRIDE;			// get maximum running speed
-	virtual float GetStepHeight( void ) const OVERRIDE;				// if delta Z is greater than this, we have to jump to get up
-	virtual float GetMaxJumpHeight( void ) const OVERRIDE;			// return maximum height of a jump
+	virtual float GetGroundSpeed() const;
+	virtual float GetRunSpeed( void ) const;			// get maximum running speed
+	virtual float GetStepHeight( void ) const;				// if delta Z is greater than this, we have to jump to get up
+	virtual float GetMaxJumpHeight( void ) const;			// return maximum height of a jump
 
-	virtual bool ShouldCollideWith( const CBaseEntity *object ) const OVERRIDE;
+	virtual bool ShouldCollideWith( const CBaseEntity *object ) const;
 
 private:
-	virtual float GetMaxYawRate( void ) const OVERRIDE;				// return max rate of yaw rotation
+	virtual float GetMaxYawRate( void ) const;				// return max rate of yaw rotation
 };
 
 
@@ -179,13 +179,13 @@ public:
 	CRobotIntention( class CTFRobotDestruction_Robot *me );
 	virtual ~CRobotIntention();
 
-	virtual void Reset( void ) OVERRIDE;
-	virtual void Update( void ) OVERRIDE;
+	virtual void Reset( void );
+	virtual void Update( void );
 
-	virtual QueryResultType			IsPositionAllowed( const INextBot *me, const Vector &pos ) const OVERRIDE;	// is the a place we can be?
+	virtual QueryResultType			IsPositionAllowed( const INextBot *me, const Vector &pos ) const;	// is the a place we can be?
 
-	virtual INextBotEventResponder *FirstContainedResponder( void ) const OVERRIDE  { return m_behavior; }
-	virtual INextBotEventResponder *NextContainedResponder( INextBotEventResponder *current ) const OVERRIDE { return NULL; }
+	virtual INextBotEventResponder *FirstContainedResponder( void ) const { return m_behavior; }
+	virtual INextBotEventResponder *NextContainedResponder( INextBotEventResponder *current ) const { return NULL; }
 
 private:
 	Behavior< CTFRobotDestruction_Robot > *m_behavior;
@@ -195,9 +195,9 @@ private:
 class CRobotBehavior : public Action< CTFRobotDestruction_Robot >
 {
 public:
-	virtual Action< CTFRobotDestruction_Robot > *InitialContainedAction( CTFRobotDestruction_Robot *me ) OVERRIDE;
-	virtual ActionResult< CTFRobotDestruction_Robot >	OnStart( CTFRobotDestruction_Robot *me, Action< CTFRobotDestruction_Robot > *priorAction ) OVERRIDE;
-	virtual ActionResult< CTFRobotDestruction_Robot >	Update( CTFRobotDestruction_Robot *me, float interval ) OVERRIDE;
+	virtual Action< CTFRobotDestruction_Robot > *InitialContainedAction( CTFRobotDestruction_Robot *me );
+	virtual ActionResult< CTFRobotDestruction_Robot >	OnStart( CTFRobotDestruction_Robot *me, Action< CTFRobotDestruction_Robot > *priorAction );
+	virtual ActionResult< CTFRobotDestruction_Robot >	Update( CTFRobotDestruction_Robot *me, float interval );
 	virtual EventDesiredResult< CTFRobotDestruction_Robot > OnInjured( CTFRobotDestruction_Robot *me, const CTakeDamageInfo &info );
 	EventDesiredResult< CTFRobotDestruction_Robot > OnContact( CTFRobotDestruction_Robot *me, CBaseEntity *pOther, CGameTrace *result = NULL );
 	virtual const char *GetName( void ) const	{ return "RobotBehavior"; }		// return name of this action
@@ -226,19 +226,19 @@ public:
 #ifdef GAME_DLL
 	CRobotDispenser();
 
-	virtual void Spawn( void ) OVERRIDE;
-	virtual void OnGoActive( void ) OVERRIDE;
-	virtual void GetControlPanelInfo( int nPanelIndex, const char *&pPanelName ) OVERRIDE;
-	virtual void SetModel( const char *pModel ) OVERRIDE;
-	virtual float GetDispenserRadius( void ) OVERRIDE { return 128; }
-	virtual float GetHealRate() const OVERRIDE { return 5.f; }
+	virtual void Spawn( void );
+	virtual void OnGoActive( void );
+	virtual void GetControlPanelInfo( int nPanelIndex, const char *&pPanelName );
+	virtual void SetModel( const char *pModel );
+	virtual float GetDispenserRadius( void ) { return 128; }
+	virtual float GetHealRate() const { return 5.f; }
 
-	virtual int DispenseMetal( CTFPlayer * ) OVERRIDE { return 0; }
-	virtual bool DispenseAmmo( CTFPlayer * ) OVERRIDE { return false; }
+	virtual int DispenseMetal( CTFPlayer * ) { return 0; }
+	virtual bool DispenseAmmo( CTFPlayer * ) { return false; }
 
 private:
 
-	virtual void PlayActiveSound() OVERRIDE { /*DO NOTHING*/ }
+	virtual void PlayActiveSound() { /*DO NOTHING*/ }
 #endif
 };
 
@@ -283,30 +283,30 @@ public:
 	CTFRobotDestruction_Robot( void );
 	virtual ~CTFRobotDestruction_Robot( void );
 	static void StaticPrecache( void );
-	virtual void Precache( void ) OVERRIDE;
+	virtual void Precache( void );
 
-	virtual void Spawn( void ) OVERRIDE;
-	virtual bool ShouldCollide( int collisionGroup, int contentsMask ) const OVERRIDE;
+	virtual void Spawn( void );
+	virtual bool ShouldCollide( int collisionGroup, int contentsMask ) const;
 #ifdef CLIENT_DLL
-	virtual float GetHealthBarHeightOffset( void ) const OVERRIDE;
-	virtual void OnDataChanged( DataUpdateType_t type ) OVERRIDE;
-	virtual int	GetHealth( void ) const OVERRIDE { return m_iHealth; }
-	virtual int	GetMaxHealth( void ) const OVERRIDE { return m_iMaxHealth; }
-	virtual bool IsHealthBarVisible( void ) const OVERRIDE { return true; }
-	virtual void UpdateClientSideAnimation( void ) OVERRIDE;
-	virtual void FireGameEvent( IGameEvent *event ) OVERRIDE;
-	virtual CStudioHdr* OnNewModel() OVERRIDE;
-	virtual void FireEvent( const Vector& origin, const QAngle& angles, int event, const char *options ) OVERRIDE;
+	virtual float GetHealthBarHeightOffset( void ) const;
+	virtual void OnDataChanged( DataUpdateType_t type );
+	virtual int	GetHealth( void ) const { return m_iHealth; }
+	virtual int	GetMaxHealth( void ) const { return m_iMaxHealth; }
+	virtual bool IsHealthBarVisible( void ) const { return true; }
+	virtual void UpdateClientSideAnimation( void );
+	virtual void FireGameEvent( IGameEvent *event );
+	virtual CStudioHdr* OnNewModel();
+	virtual void FireEvent( const Vector& origin, const QAngle& angles, int event, const char *options );
 	void UpdateDamagedEffects( void );
 #else
-	virtual void HandleAnimEvent( animevent_t *pEvent ) OVERRIDE;
+	virtual void HandleAnimEvent( animevent_t *pEvent );
 	virtual bool IsRemovedOnReset( void ) const { return false; }
-	virtual void UpdateOnRemove( void ) OVERRIDE;
-	virtual void Event_Killed( const CTakeDamageInfo &info ) OVERRIDE;
-	virtual int OnTakeDamage( const CTakeDamageInfo &info ) OVERRIDE;
-	virtual void TraceAttack( const CTakeDamageInfo &inputInfo, const Vector &vecDir, trace_t *ptr, CDmgAccumulator *pAccumulator ) OVERRIDE;
+	virtual void UpdateOnRemove( void );
+	virtual void Event_Killed( const CTakeDamageInfo &info );
+	virtual int OnTakeDamage( const CTakeDamageInfo &info );
+	virtual void TraceAttack( const CTakeDamageInfo &inputInfo, const Vector &vecDir, trace_t *ptr, CDmgAccumulator *pAccumulator );
 	virtual void UpdateAnimsThink( void );
-	virtual bool IsProjectileCollisionTarget( void ) const OVERRIDE { return true; }
+	virtual bool IsProjectileCollisionTarget( void ) const { return true; }
 	
 	void RepairSelfThink( void );
 	bool GetShieldedState( void ) const { return m_bShielded; }

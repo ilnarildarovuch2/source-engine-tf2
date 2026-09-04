@@ -394,7 +394,7 @@ public:
 	CDraggableScrollingPanel( Panel *pParent, const char *pszPanelname );
 
 	virtual void ApplySettings( KeyValues *inResourceData ) OVERRIDE;
-	virtual void OnChildRemoved( Panel* pChild ) OVERRIDE;
+	virtual void OnChildRemoved( Panel* pChild );
 	virtual void OnTick() OVERRIDE;
 
 	virtual void OnMousePressed( vgui::MouseCode code ) OVERRIDE;
@@ -470,26 +470,7 @@ struct BlameNames_t
 public:
 	BlameNames_t( const CUtlVector< CSteamID >& vecBlameSteamIDs, const char* pszReason, const char* pszSingularVerb, const char* pszPluralVerb )
 	{
-		wchar_t wszMembers[ 512 ];
-
-		FOR_EACH_VEC( vecBlameSteamIDs, i )
-		{
-			if ( i == 0 )
-			{
-				g_pVGuiLocalize->ConstructString_safe( wszMembers, L"%s1", 1, CStrAutoEncode( SteamFriends()->GetFriendPersonaName( vecBlameSteamIDs[ i ] ) ).ToWString() );
-			}
-			else if ( i == vecBlameSteamIDs.Count() - 1 )
-			{
-				g_pVGuiLocalize->ConstructString_safe( wszMembers, g_pVGuiLocalize->Find( "#TF_PartyMemberState_LastTwo" ), 2, CStrAutoEncode( wszMembers ).ToWString(), CStrAutoEncode( SteamFriends()->GetFriendPersonaName( vecBlameSteamIDs[ i ] ) ).ToWString() );
-			}
-			else
-			{
-				g_pVGuiLocalize->ConstructString_safe( wszMembers, L"%s1, %s2", 2, CStrAutoEncode( wszMembers ).ToWString(), CStrAutoEncode( SteamFriends()->GetFriendPersonaName( vecBlameSteamIDs[ i ] ) ).ToWString() );
-			}
-		}
-
-		g_pVGuiLocalize->ConstructString_safe( wszMembers, vecBlameSteamIDs.Count() == 1 ? g_pVGuiLocalize->Find( pszSingularVerb ) : g_pVGuiLocalize->Find( pszPluralVerb ) , 1, CStrAutoEncode( wszMembers ).ToWString() );
-		g_pVGuiLocalize->ConstructString_safe( m_wszBuff, g_pVGuiLocalize->Find( pszReason ), 1, wszMembers );
+		// NOPE, LOL!
 	}
 
 	const wchar_t* Get() const { return m_wszBuff; }

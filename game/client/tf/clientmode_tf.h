@@ -45,15 +45,15 @@ public:
 	virtual void	InitViewport();
 	virtual void	Shutdown();
 
-	virtual void	LevelInit( const char *newmap ) OVERRIDE;
+	virtual void	LevelInit( const char *newmap );
 
 //	virtual int		KeyInput( int down, ButtonCode_t keynum, const char *pszCurrentBinding );
 
 	virtual float	GetViewModelFOV( void );
 	virtual bool	ShouldDrawViewModel();
 	virtual bool	ShouldDrawCrosshair( void );
-	virtual bool	ShouldBlackoutAroundHUD() OVERRIDE;
-	virtual HeadtrackMovementMode_t ShouldOverrideHeadtrackControl() OVERRIDE;
+	virtual bool	ShouldBlackoutAroundHUD();
+	virtual HeadtrackMovementMode_t ShouldOverrideHeadtrackControl();
 
 	int				GetDeathMessageStartHeight( void );
 
@@ -67,11 +67,11 @@ public:
 
 	virtual bool	DoPostScreenSpaceEffects( const CViewSetup *pSetup );
 	virtual void	Update();
-	virtual void	ComputeVguiResConditions( KeyValues *pkvConditions ) OVERRIDE;
+	virtual void	ComputeVguiResConditions( KeyValues *pkvConditions );
 
-	virtual bool	IsInfoPanelAllowed() OVERRIDE;
-	virtual void	InfoPanelDisplayed() OVERRIDE;
-	virtual bool	IsHTMLInfoPanelAllowed() OVERRIDE;
+	virtual bool	IsInfoPanelAllowed();
+	virtual void	InfoPanelDisplayed();
+	virtual bool	IsHTMLInfoPanelAllowed();
 
 	IGameUI			*GameUI( void ) { return m_pGameUI; }
 
@@ -109,13 +109,13 @@ public:
 		                                      pszMatchGroupLocToken, pszPrettyMapName );
 	}
 
-	virtual void OnDemoRecordStart( char const* pDemoBaseName ) OVERRIDE;
-	virtual void OnDemoRecordStop() OVERRIDE;
+	virtual void OnDemoRecordStart( char const* pDemoBaseName );
+	virtual void OnDemoRecordStop();
 
 	bool BIsFriendOrPartyMember( C_TFPlayer *pPlayer );
 
 private:
-	virtual bool BCanSendPartyChatMessages() const OVERRIDE;
+	virtual bool BCanSendPartyChatMessages() const;
 	//	void	UpdateSpectatorMode( void );
 
 private:

@@ -52,6 +52,7 @@ def build(bld):
 		'../../vgui2/include',
 		'../../vgui2/controls',
 		'../../thirdparty/protobuf-2.6.1/src',
+		'../../gcsdk',
 		'../shared'
 	]
 

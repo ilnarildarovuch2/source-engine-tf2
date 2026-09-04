@@ -195,7 +195,7 @@ public:
 	CCaptureFlag();
 	~CCaptureFlag();
 
-	unsigned int	GetItemID( void ) const OVERRIDE;
+	unsigned int	GetItemID( void ) const;
 
 	void			Precache( void );
 	void			Spawn( void );
@@ -281,8 +281,8 @@ public:
 	void			AddPointValue( int nPoints );
 
 #else // CLIENT DLL Functions
-	virtual bool	ShouldDraw() OVERRIDE;
-	virtual bool IsVisibleToTargetID() const OVERRIDE;
+	virtual bool	ShouldDraw();
+	virtual bool IsVisibleToTargetID() const;
 	virtual const char	*GetIDString( void ) { return "entity_capture_flag"; };
 
 	virtual void	OnPreDataChanged( DataUpdateType_t updateType );

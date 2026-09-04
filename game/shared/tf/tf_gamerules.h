@@ -341,9 +341,9 @@ public:
 
 	virtual bool	ShouldBalanceTeams( void );
 
-	virtual int		GetBonusRoundTime( bool bGameOver = false ) OVERRIDE;
+	virtual int		GetBonusRoundTime( bool bGameOver = false );
 
-	virtual bool	PointsMayBeCaptured( void ) OVERRIDE;
+	virtual bool	PointsMayBeCaptured( void );
 
 #ifdef GAME_DLL
 public:
@@ -356,7 +356,7 @@ public:
 
 	virtual void	FrameUpdatePostEntityThink();
 
-	virtual void	RespawnPlayers( bool bForceRespawn, bool bTeam = false, int iTeam = TEAM_UNASSIGNED ) OVERRIDE;
+	virtual void	RespawnPlayers( bool bForceRespawn, bool bTeam = false, int iTeam = TEAM_UNASSIGNED );
 
 	// Called when a new round is being initialized
 	virtual void	SetupOnRoundStart( void );
@@ -371,7 +371,7 @@ public:
 	virtual void	SendTeamScoresEvent( void ) { return; }
 
 	// Send the end of round info displayed in the win panel
-	virtual void	SendWinPanelInfo( bool bGameOver ) OVERRIDE;
+	virtual void	SendWinPanelInfo( bool bGameOver );
 	void			SendArenaWinPanelInfo( void );
 	void			SendPVEWinPanelInfo( void );
 
@@ -470,7 +470,7 @@ public:
 	// Client connection/disconnection
 	virtual bool ClientConnected( edict_t *pEntity, const char *pszName, const char *pszAddress, char *reject, int maxrejectlen );
 
-	virtual bool ShouldSkipAutoScramble( void ) OVERRIDE
+	virtual bool ShouldSkipAutoScramble( void )
 	{
 		return IsPVEModeActive();
 	}
@@ -492,7 +492,7 @@ public:
 
 	void			TeleportPlayersToTargetEntities( int iTeam, const char *pszEntTargetName, CUtlVector< CTFPlayer * > *pTeleportedPlayers );
 
-	virtual void LoadMapCycleFileIntoVector ( const char *pszMapCycleFile, CUtlVector<char *> &mapList ) OVERRIDE;
+	virtual void LoadMapCycleFileIntoVector ( const char *pszMapCycleFile, CUtlVector<char *> &mapList );
 
 	void			OnWorkshopMapUpdated( PublishedFileId_t nWorkshopID );
 
@@ -503,9 +503,9 @@ public:
 
 	void			CreateSoldierStatue();
 
-	virtual void	BroadcastSound( int iTeam, const char *sound, int iAdditionalSoundFlags = 0, CBasePlayer *pPlayer = NULL ) override;
+	virtual void	BroadcastSound( int iTeam, const char *sound, int iAdditionalSoundFlags = 0, CBasePlayer *pPlayer = NULL );
 
-	void			RegisterScriptFunctions() override;
+	void			RegisterScriptFunctions();
 
 	int				GetRoundState() { return (int)State_Get(); }
 
@@ -513,12 +513,12 @@ public:
 
 protected:
 
-	virtual void LoadMapCycleFile( void ) OVERRIDE;
+	virtual void LoadMapCycleFile( void );
 	void TrackWorkshopMapsInMapCycle( void );
 
-	virtual const char* GetStalemateSong( int nTeam ) OVERRIDE;
-	virtual const char* WinSongName( int nTeam ) OVERRIDE;
-	virtual const char* LoseSongName( int nTeam ) OVERRIDE;
+	virtual const char* GetStalemateSong( int nTeam );
+	virtual const char* WinSongName( int nTeam );
+	virtual const char* LoseSongName( int nTeam );
 
 	virtual void	InitTeams( void );
 
@@ -555,8 +555,8 @@ public:
 	virtual void	BetweenRounds_Start( void );
 	virtual void	BetweenRounds_End( void );
 	virtual void	BetweenRounds_Think( void );
-	virtual void	PreRound_Start( void ) OVERRIDE;
-	virtual void	PreRound_End( void ) OVERRIDE;
+	virtual void	PreRound_Start( void );
+	virtual void	PreRound_End( void );
 #endif
 
 public:
@@ -589,8 +589,8 @@ public:
 	int		GetStopWatchState( void ) { return m_nStopWatchState; }
 	
 	// Game Modes
-	virtual bool IsInArenaMode( void ) const OVERRIDE;
-	virtual bool IsInKothMode( void ) const OVERRIDE { return m_bPlayingKoth; }
+	virtual bool IsInArenaMode( void ) const;
+	virtual bool IsInKothMode( void ) const { return m_bPlayingKoth; }
 	bool IsInMedievalMode( void ) const { return m_bPlayingMedieval; }
 	bool IsHolidayMap( int nHoliday ) const { return m_nMapHolidayType == nHoliday; }
 	
@@ -828,12 +828,12 @@ bool IsCreepWaveMode( void ) const;
 
 	virtual bool SwitchToNextBestWeapon( CBaseCombatCharacter *pPlayer, CBaseCombatWeapon *pCurrentWeapon );
 
-	bool CheckWinLimit( bool bAllowEnd = true, int nAddValueWhenChecking = 0 ) OVERRIDE;
+	bool CheckWinLimit( bool bAllowEnd = true, int nAddValueWhenChecking = 0 );
 	bool SetCtfWinningTeam();
 	bool SetPasstimeWinningTeam();
 	bool CheckCapsPerRound();
 	virtual void CheckRespawnWaves();
-	virtual void PlayWinSong( int team ) OVERRIDE;
+	virtual void PlayWinSong( int team );
 
 //=============================================================================
 // HPE_BEGIN:
@@ -844,7 +844,7 @@ bool IsCreepWaveMode( void ) const;
 // HPE_END
 //=============================================================================
 
-	virtual void SetWinningTeam( int team, int iWinReason, bool bForceMapReset = true, bool bSwitchTeams = false, bool bDontAddScore = false, bool bFinal = false ) OVERRIDE;
+	virtual void SetWinningTeam( int team, int iWinReason, bool bForceMapReset = true, bool bSwitchTeams = false, bool bDontAddScore = false, bool bFinal = false );
 	virtual void SetStalemate( int iReason, bool bForceMapReset = true, bool bSwitchTeams = false );
 
 	void CheckTauntAchievement( CTFPlayer *pAchiever, int nGibs, int *pTauntCamAchievements );
@@ -938,7 +938,7 @@ bool IsCreepWaveMode( void ) const;
 	void		AddPlayerToQueue( CTFPlayer *pPlayer );
 	void		AddPlayerToQueueHead( CTFPlayer *pPlayer );
 	void		RemovePlayerFromQueue( CTFPlayer *pPlayer );
-	virtual bool BHavePlayers( void ) OVERRIDE;
+	virtual bool BHavePlayers( void );
 
 	void		Arena_RunTeamLogic( void );
 	void		Arena_ResetLosersScore( bool bResetAll );
@@ -963,7 +963,7 @@ bool IsCreepWaveMode( void ) const;
 	int		CalculateCurrencyAmount_ByType( CurrencyRewards_t nType );									// How much to give players for specific items and events, i.e. cash collection bonus, small packs
 	int		DistributeCurrencyAmount( int nAmount, CTFPlayer *pTFPlayer = NULL, bool bShared = true, bool bCountAsDropped = false, bool bIsBonus = false );	// Distributes nAmount to a specific player or team
 
-	virtual bool StopWatchShouldBeTimedWin( void ) OVERRIDE;
+	virtual bool StopWatchShouldBeTimedWin( void );
 
 public:
 	void SetPlayerNextMapVote( int nIndex, EUserNextMapVote eState ) { m_ePlayerWantsRematch.Set( nIndex, eState ); }
@@ -1238,7 +1238,7 @@ public:
 
 	float	GetCapturePointTime( void ) { return m_flCapturePointEnableTime; }
 
-	virtual bool ShouldDrawHeadLabels() override;
+	virtual bool ShouldDrawHeadLabels();
 
 	enum HalloweenScenarioType
 	{

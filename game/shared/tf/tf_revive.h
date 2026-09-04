@@ -41,21 +41,21 @@ class CTFReviveMarker : public CBaseAnimating
 public:
 	CTFReviveMarker();
 	
-	virtual void Precache() OVERRIDE;
-	virtual void Spawn( void ) OVERRIDE;
-	virtual bool ShouldCollide( int collisionGroup, int contentsMask ) const OVERRIDE;
+	virtual void Precache();
+	virtual void Spawn( void );
+	virtual bool ShouldCollide( int collisionGroup, int contentsMask ) const;
 	virtual bool IsCombatItem( void ) const { return true; }
 
 #ifdef GAME_DLL
 	static CTFReviveMarker *Create( CTFPlayer *pOwner );
-	virtual int	UpdateTransmitState( void ) OVERRIDE;
-	virtual int ShouldTransmit( const CCheckTransmitInfo *pInfo ) OVERRIDE;
+	virtual int	UpdateTransmitState( void );
+	virtual int ShouldTransmit( const CCheckTransmitInfo *pInfo );
 	void ReviveThink( void );
 #else
-	virtual void OnDataChanged( DataUpdateType_t updateType ) OVERRIDE;
-	virtual int GetHealth( void ) const OVERRIDE { return m_iHealth; }
-	virtual int GetMaxHealth( void ) const OVERRIDE { return m_iMaxHealth; }
-	virtual bool IsVisibleToTargetID( void ) const OVERRIDE { return true; }
+	virtual void OnDataChanged( DataUpdateType_t updateType );
+	virtual int GetHealth( void ) const { return m_iHealth; }
+	virtual int GetMaxHealth( void ) const { return m_iMaxHealth; }
+	virtual bool IsVisibleToTargetID( void ) const { return true; }
 #endif // GAME_DLL
 
 	void SetOwner( CTFPlayer *pPlayer );

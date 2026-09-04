@@ -66,10 +66,6 @@ void CTFHudSpectatorExtras::Reset( void )
 		if ( !pEnt )
 			continue;
 
-		if ( pEnt->IsClientSideGlowEnabled() )
-		{
-			pEnt->SetClientSideGlowEnabled( false );
-		}
 	}
 
 	m_vecEntitiesToDraw.Purge();
@@ -165,10 +161,6 @@ void CTFHudSpectatorExtras::OnTick()
 				( !bShowEveryone && pPlayer->IsPlayerClass( TF_CLASS_SPY ) && !pPlayer->m_Shared.InCond( TF_COND_DISGUISED ) && ( nPlayerTeamNumber != nLocalPlayerTeam ) ) ||
 				( !bShowEveryone && pPlayer->IsPlayerClass( TF_CLASS_SPY ) && pPlayer->m_Shared.InCond( TF_COND_DISGUISED ) && ( nPlayerTeamNumber != nLocalPlayerTeam ) && ( pPlayer->m_Shared.GetDisguiseTeam() != nLocalPlayerTeam ) ) )
 			{
-				if ( pPlayer->IsClientSideGlowEnabled() )
-				{
-					pPlayer->SetClientSideGlowEnabled( false );
-				}
 				RemoveEntity( i );
 				continue;
 			}
@@ -203,10 +195,6 @@ void CTFHudSpectatorExtras::OnTick()
 					// if we're in chase mode, just remove them entirely
 					if ( pLocalPlayer->GetObserverMode() == OBS_MODE_CHASE )
 					{
-						if ( pPlayer->IsClientSideGlowEnabled() )
-						{
-							pPlayer->SetClientSideGlowEnabled( false );
-						}
 						RemoveEntity( i );
 						continue;
 					}
@@ -252,11 +240,6 @@ void CTFHudSpectatorExtras::OnTick()
 			float r, g, b;
 			pPlayer->GetGlowEffectColor( &r, &g, &b );
 			m_vecEntitiesToDraw[nVecIndex].m_clrGlowColor = Color( r * 255, g * 255, b * 255, 255 );
-
-			if ( !pPlayer->IsClientSideGlowEnabled() )
-			{
-				pPlayer->SetClientSideGlowEnabled( true );
-			}
 		}
 
 		// loop through the buildings
@@ -338,18 +321,9 @@ void CTFHudSpectatorExtras::OnTick()
 				float r, g, b;
 				pObject->GetGlowEffectColor( &r, &g, &b );
 				m_vecEntitiesToDraw[nVecIndex].m_clrGlowColor = Color( r * 255, g * 255, b * 255, 255 );
-
-				if ( !pObject->IsClientSideGlowEnabled() )
-				{
-					pObject->SetClientSideGlowEnabled( true );
-				}
 			}
 			else
 			{
-				if ( pObject->IsClientSideGlowEnabled() )
-				{
-					pObject->SetClientSideGlowEnabled( false );
-				}
 				RemoveEntity( pObject->entindex() );
 			}
 		}

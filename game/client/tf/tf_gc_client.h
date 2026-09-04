@@ -301,7 +301,7 @@ private:
 
 	// DECL_STEAM_CALLBACK( LobbyChatMsg );
 	// DECL_STEAM_CALLBACK( SomeOtherFunThing... );
-	DECL_STEAM_CALLBACK( GetTicketForWebApiResponse );
+	// DECL_STEAM_CALLBACK( GetTicketForWebApiResponse );
 
 #undef DECL_STEAM_CALLBACK
 
@@ -310,7 +310,7 @@ private:
 	//
 	void WebapiInventoryThink();
 	void OnWebapiInventoryReceived( HTTPRequestCompleted_t* pInfo, bool bIOFailure );
-	void OnWebapiAuthTicketReceived( GetTicketForWebApiResponse_t* pInfo );
+	// void OnWebapiAuthTicketReceived( GetTicketForWebApiResponse_t* pInfo );
 
 	enum EWebapiInventoryState {
 		kWebapiInventoryState_Init,
@@ -375,7 +375,7 @@ private:
 		kWebapiServerInventoryState_SendToServer
 	};
 	WebapiInventoryState_t m_WebapiServerInventory;
-	void OnWebapiServerAuthTicketReceived( GetTicketForWebApiResponse_t* pInfo );
+	// void OnWebapiServerAuthTicketReceived( GetTicketForWebApiResponse_t* pInfo );
 
 	// SDK expansion points
 	void SDK_SelectItemsToSendToServer( CMsgAuthorizeServerItemRetrieval* /*out*/ pMsg, CGCClientSharedObjectCache* pSOCache );

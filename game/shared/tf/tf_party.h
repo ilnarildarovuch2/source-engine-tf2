@@ -91,7 +91,7 @@ public:
 	const static int k_nTypeID = k_EProtoObjectTFPartyInvite;
 
 	virtual GCSDK::PlayerGroupID_t GetGroupID() const OVERRIDE { return Obj().group_id(); }
-	virtual CSteamID GetInviter() const OVERRIDE { return CSteamID( Obj().inviter() ); }
+	virtual CSteamID GetInviter() const OVERRIDE { return CSteamID( static_cast<uint64>(Obj().inviter() ) ); }
 	virtual GCSDK::CSharedObject* GetSharedObject() OVERRIDE { return this; }
 
 	int GetNumMembers() const { return Obj().members_size(); }

@@ -84,6 +84,7 @@ enum TFMapStatType_t
 
 #define TFMAPSTAT_FIRST (TFMAPSTAT_UNDEFINED+1)
 #define TFMAPSTAT_LAST (TFMAPSTAT_TOTAL-1)
+#define MAX_PLAYERS_ARRAY_SAFE 33
 
 extern const char *s_pMapStatStrings[ TFMAPSTAT_TOTAL ];
 

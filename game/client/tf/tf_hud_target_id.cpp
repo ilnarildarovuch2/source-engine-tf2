@@ -83,9 +83,6 @@ bool ShouldHealthBarBeVisible( CBaseEntity *pTarget, CTFPlayer *pLocalPlayer )
 	if ( tf_hud_target_id_disable_floating_health.GetBool() )
 		return false;
 
-	if ( pTarget->IsHealthBarVisible() )
-		return true;
-
 	if ( !pTarget->IsPlayer() )
 		return false;
 
@@ -125,8 +122,6 @@ CTargetID::CTargetID( const char *pElementName ) :
 	m_iLastEntIndex = 0;
 	m_nOriginalY = 0;
 	m_bArenaPanelVisible = false;
-
-	SetHiddenBits( HIDEHUD_MISCSTATUS | HIDEHUD_TARGET_ID );
 
 	m_pTargetNameLabel = NULL;
 	m_pTargetDataLabel = NULL;
@@ -1019,13 +1014,13 @@ void CTargetID::UpdateID( void )
 			if ( m_pMoveableSubPanel->IsVisible() )
 			{
 				const char *pBoundKey = nullptr;
-				if ( pszActionCommand && ::input->IsSteamControllerActive() )
+				if ( pszActionCommand )
 				{
 					auto origin = g_pInputSystem->GetSteamControllerActionOrigin( *pszActionCommand == '+' ? pszActionCommand + 1 : pszActionCommand, GAME_ACTION_SET_FPSCONTROLS );
 					if ( origin != k_EControllerActionOrigin_None )
 					{
 						auto pSteamController = g_pInputSystem->SteamControllerInterface();
-						pBoundKey = pSteamController ? pSteamController->GetStringForActionOrigin( origin ) : "";
+						//pBoundKey = pSteamController ? pSteamController->GetStringForActionOrigin( origin ) : "";
 					}
 
 				}
@@ -1522,7 +1517,7 @@ bool CFloatingHealthIcon::CalculatePosition( )
 
 	// Reposition based on our target's position
 	Vector vecDistance = vecTarget - pLocalTFPlayer->GetAbsOrigin();
-	vecTarget.z += VEC_HULL_MAX_SCALED( m_hEntity->GetBaseAnimating() ).z + tf_healthicon_height_offset.GetInt() + m_hEntity->GetHealthBarHeightOffset();
+	vecTarget.z += VEC_HULL_MAX_SCALED( m_hEntity->GetBaseAnimating() ).z + tf_healthicon_height_offset.GetInt();
 
 	int iX, iY;
 	GetVectorInHudSpace( vecTarget, iX, iY );				// TODO: GetVectorInHudSpace or GetVectorInScreenSpace?

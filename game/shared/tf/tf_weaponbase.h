@@ -307,12 +307,12 @@ class CTFWeaponBase : public CBaseCombatWeapon, public IHasOwner, public IHasGen
 	virtual const char *GetViewModel( int iViewModel = 0 ) const;
 	virtual const char *GetWorldModel( void ) const;
 
-	virtual Activity ActivityOverride( Activity baseAct, bool *pRequired ) OVERRIDE;
+	virtual Activity ActivityOverride( Activity baseAct, bool *pRequired );
 	
 	virtual poseparamtable_t* GetPlayerPoseParamList( int &iPoseParamCount );
 	virtual poseparamtable_t* GetItemPoseParamList( int &iPoseParamCount );
 
-	virtual bool SendWeaponAnim( int iActivity ) OVERRIDE;
+	virtual bool SendWeaponAnim( int iActivity );
 
 	virtual CBaseEntity	*GetOwnerViaInterface( void ) { return GetOwner(); }
 
@@ -323,7 +323,7 @@ class CTFWeaponBase : public CBaseCombatWeapon, public IHasOwner, public IHasGen
 	virtual void StartHolsterAnim( void );
 	virtual bool Holster( CBaseCombatWeapon *pSwitchingTo = NULL );
 	virtual bool Deploy( void );
-	virtual bool ForceWeaponSwitch() const OVERRIDE;
+	virtual bool ForceWeaponSwitch() const;
 	virtual void Detach( void );
 	virtual void OnActiveStateChanged( int iOldState );
 	virtual bool VisibleInWeaponSelection( void );
@@ -345,7 +345,7 @@ class CTFWeaponBase : public CBaseCombatWeapon, public IHasOwner, public IHasGen
 
 	// Extra wearables.
 #ifdef GAME_DLL
-	virtual void ChangeTeam( int iTeamNum ) OVERRIDE;	
+	virtual void ChangeTeam( int iTeamNum );	
 	virtual void UpdateExtraWearables();
 	virtual void ExtraWearableEquipped( CTFWearable *pExtraWearableItem );
 	virtual void ExtraWearableViewModelEquipped( CTFWearable *pExtraWearableItem );
@@ -368,7 +368,7 @@ class CTFWeaponBase : public CBaseCombatWeapon, public IHasOwner, public IHasGen
 	virtual void GetProjectileFireSetup( CTFPlayer *pPlayer, Vector vecOffset, Vector *vecSrc, QAngle *angForward, bool bHitTeammates = true, float flEndDist = 2000.f );
 	virtual QAngle GetSpreadAngles( void );
 	float GetLastPrimaryAttackTime( void ) const { return m_flLastPrimaryAttackTime; }
-	virtual bool CanPerformSecondaryAttack() const OVERRIDE;
+	virtual bool CanPerformSecondaryAttack() const;
 	virtual bool IsFiring( void ) const { return false; }
 	virtual bool AreRandomCritsEnabled( void );
 
@@ -380,7 +380,7 @@ class CTFWeaponBase : public CBaseCombatWeapon, public IHasOwner, public IHasGen
 	virtual bool IsReloading() const;			// is the weapon reloading right now?
 	virtual float GetReloadSpeedScale() const { return 1.f; }
 
-	virtual bool AutoFiresFullClip( void ) const OVERRIDE;
+	virtual bool AutoFiresFullClip( void ) const;
 	bool AutoFiresFullClipAllAtOnce( void ) const;
 	bool CanOverload( void ) const;
 	virtual bool CheckReloadMisfire( void ) { return false; }
@@ -403,7 +403,7 @@ class CTFWeaponBase : public CBaseCombatWeapon, public IHasOwner, public IHasGen
 	virtual void SetWeaponVisible( bool visible );
 
 	virtual int GetActivityWeaponRole() const;
-	virtual acttable_t *ActivityList( int &iActivityCount ) OVERRIDE;
+	virtual acttable_t *ActivityList( int &iActivityCount );
 
 	virtual Activity	TranslateViewmodelHandActivityInternal( Activity actBase );
 	virtual int			GetViewModelWeaponRole() { return GetTFWpnData().m_iWeaponType; }
@@ -445,7 +445,7 @@ class CTFWeaponBase : public CBaseCombatWeapon, public IHasOwner, public IHasGen
 	virtual const char* ModifyEventParticles( const char* token ) { return token; }
 
 	// Shadows
-	virtual ShadowType_t ShadowCastType( void ) OVERRIDE;
+	virtual ShadowType_t ShadowCastType( void );
 #endif
 
 	virtual bool	CanAttack();
@@ -564,13 +564,13 @@ class CTFWeaponBase : public CBaseCombatWeapon, public IHasOwner, public IHasGen
 	bool			UsingViewModel();
 	C_BaseAnimating *GetAppropriateWorldOrViewModel();
 
-	virtual bool	ShouldDraw( void ) OVERRIDE;
-	virtual void	UpdateVisibility( void ) OVERRIDE;
+	virtual bool	ShouldDraw( void );
+	virtual void	UpdateVisibility( void );
 
 	virtual void	ProcessMuzzleFlashEvent( void );
 	virtual void	DispatchMuzzleFlash( const char* effectName, C_BaseEntity* pAttachEnt );
 	virtual int		InternalDrawModel( int flags );
-	virtual bool	OnInternalDrawModel( ClientModelRenderInfo_t *pInfo ) OVERRIDE;
+	virtual bool	OnInternalDrawModel( ClientModelRenderInfo_t *pInfo );
 
 	virtual bool	ShouldPredict();
 	virtual void	PostDataUpdate( DataUpdateType_t updateType );
@@ -585,8 +585,8 @@ class CTFWeaponBase : public CBaseCombatWeapon, public IHasOwner, public IHasGen
 	virtual void	AddViewmodelBob( CBaseViewModel *viewmodel, Vector &origin, QAngle &angles );
 	virtual	float	CalcViewmodelBob( void );
 	BobState_t		*GetBobState();
-	virtual bool	AttachmentModelsShouldBeVisible( void ) OVERRIDE { return (m_iState == WEAPON_IS_ACTIVE) && !IsBeingRepurposedForTaunt(); }
-	virtual void	UpdateAttachmentModels( void ) OVERRIDE;
+	virtual bool	AttachmentModelsShouldBeVisible( void ) { return (m_iState == WEAPON_IS_ACTIVE) && !IsBeingRepurposedForTaunt(); }
+	virtual void	UpdateAttachmentModels( void );
 
 	virtual bool ShouldEjectBrass() { return true; }
 
@@ -646,7 +646,7 @@ class CTFWeaponBase : public CBaseCombatWeapon, public IHasOwner, public IHasGen
 	CHandle< CTFWeaponAttachmentModel > m_viewmodelStatTrakAddon;
 	CHandle< CTFWeaponAttachmentModel > m_worldmodelStatTrakAddon;
 
-	virtual const Vector&	GetViewmodelOffset() OVERRIDE;
+	virtual const Vector&	GetViewmodelOffset();
 #endif
 
 	virtual bool ShouldRemoveInvisibilityOnPrimaryAttack() const { return true; }
@@ -765,7 +765,7 @@ public:
 	
 	virtual void HookAttributes( void ) {};
 	virtual void OnUpgraded( void ) { HookAttributes(); }
-	virtual float GetNextSecondaryAttackDelay( void ) OVERRIDE;
+	virtual float GetNextSecondaryAttackDelay( void );
 
 	enum TFWeaponInspectStage
 	{
@@ -779,7 +779,7 @@ public:
 	TFWeaponInspectStage GetInspectStage() const { return (TFWeaponInspectStage)m_nInspectStage.Get(); }
 	float GetInspectAnimEndTime() const { return m_flInspectAnimEndTime; }
 
-	virtual bool UsesCenterFireProjectile( void ) const OVERRIDE;
+	virtual bool UsesCenterFireProjectile( void ) const;
 
 private:
 	CTFWeaponBase( const CTFWeaponBase & );
@@ -826,7 +826,7 @@ public:
 
 	bool BIsViewModelAttachment() { return m_bIsViewModelAttachment; }
 	
-	virtual CBaseEntity	*GetOwnerViaInterface( void ) OVERRIDE { return m_hWeaponAssociatedWith.Get() ? m_hWeaponAssociatedWith.Get()->GetOwner() : NULL; }
+	virtual CBaseEntity	*GetOwnerViaInterface( void ) { return m_hWeaponAssociatedWith.Get() ? m_hWeaponAssociatedWith.Get()->GetOwner() : NULL; }
 private:
 
 	bool m_bIsViewModelAttachment;

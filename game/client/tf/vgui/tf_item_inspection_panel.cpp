@@ -225,7 +225,8 @@ void CTFItemInspectionPanel::ApplySchemeSettings( IScheme *pScheme )
 	PostMessage( m_pPaintkitPreviewContainer, msg);
 
 	// Start spinning
-	g_pClientMode->GetViewportAnimationController()->RunAnimationCommand( this, "spin_vel", 1.f, 0.f, 2.f, vgui::AnimationController::INTERPOLATOR_BIAS, 0.75f, true, false );
+	// g_pClientMode->GetViewportAnimationController()->RunAnimationCommand( this, "spin_vel", 1.f, 0.f, 2.f, vgui::AnimationController::INTERPOLATOR_BIAS, 0.75f, true, false );
+	// Nope, you don't
 }
 
 //-----------------------------------------------------------------------------
@@ -293,10 +294,6 @@ void CTFItemInspectionPanel::OnCommand( const char *command )
 		if ( m_pItemViewData && steamapicontext && steamapicontext->SteamFriends() )
 		{
 			const char *pszPrefix = "";
-			if ( GetUniverse() == k_EUniverseBeta )
-			{
-				pszPrefix = "beta.";
-			}
 
 			CEconItemLocalizedMarketNameGenerator generator( GLocalizationProvider(), m_pItemViewData );
 
@@ -326,27 +323,6 @@ void CTFItemInspectionPanel::OnThink()
 			flDt = Plat_FloatTime() - m_flLastThink;
 		}
 		m_flLastThink = Plat_FloatTime();
-
-		// If the user is manipulating the panel, stop spinning right away
-		if ( m_pModelInspectPanel->BIsBeingManipulated() )
-		{
-			if ( m_flLastManipulatedTime == 0.f )
-			{
-				g_pClientMode->GetViewportAnimationController()->RunAnimationCommand( this, "spin_vel", 0.f, 0.f, 0.0f, vgui::AnimationController::INTERPOLATOR_BIAS, 0.75f, true, false );
-			}
-
-			m_flLastManipulatedTime = Plat_FloatTime();
-		}
-		else
-		{
-			// If they've stopped manipulating the panel, wait a bit, then start auto-spinning again
-			float flTimeSinceManip = Plat_FloatTime() - m_flLastManipulatedTime;
-			if ( flTimeSinceManip > 2.f && m_flLastManipulatedTime != 0.f )
-			{
-				g_pClientMode->GetViewportAnimationController()->RunAnimationCommand( this, "spin_vel", 1.f, 0.f, 2.f, vgui::AnimationController::INTERPOLATOR_BIAS, 0.75f, true, false );
-				m_flLastManipulatedTime = 0.f;
-			}
-		}
 
 		m_pModelInspectPanel->RotateYaw( tf_item_inspect_model_spin_rate.GetFloat() * m_flSpinVel * flDt );
 	}

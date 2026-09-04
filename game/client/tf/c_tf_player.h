@@ -104,7 +104,7 @@ public:
 	virtual void ApplyBoneMatrixTransform( matrix3x4_t& transform );
 	virtual void BuildTransformations( CStudioHdr *hdr, Vector *pos, Quaternion q[], const matrix3x4_t& cameraTransform, int boneMask, CBoneBitList &boneComputed );
 
-	virtual bool CreateMove( float flInputSampleTime, CUserCmd *pCmd ) OVERRIDE;
+	virtual bool CreateMove( float flInputSampleTime, CUserCmd *pCmd );
 	void CreateVehicleMove( float flInputSampleTime, CUserCmd *pCmd );
 
 	virtual bool		IsAllowedToSwitchWeapons( void );
@@ -125,8 +125,8 @@ public:
 	bool IsActiveTFWeapon( const CSchemaItemDefHandle &weaponHandle ) const;
 
 	virtual void Simulate( void );
-	virtual void FireEvent( const Vector& origin, const QAngle& angles, int event, const char *options ) OVERRIDE;
-	virtual void UpdateStepSound( surfacedata_t *psurface, const Vector &vecOrigin, const Vector &vecVelocity ) OVERRIDE;
+	virtual void FireEvent( const Vector& origin, const QAngle& angles, int event, const char *options );
+	virtual void UpdateStepSound( surfacedata_t *psurface, const Vector &vecOrigin, const Vector &vecVelocity );
 	virtual void PlayStepSound( Vector &vecOrigin, surfacedata_t *psurface, float fvol, bool force );
 
 	CNewParticleEffect *SpawnHalloweenSpellFootsteps( ParticleAttachment_t eParticleAttachment, int iHalloweenFootstepType );
@@ -215,7 +215,7 @@ public:
 
 	float GetPercentInvisible( void );
 	float GetEffectiveInvisibilityLevel( void );	// takes viewer into account
-	virtual bool IsTransparent( void ) OVERRIDE { return GetPercentInvisible() > 0.f; }
+	virtual bool IsTransparent( void ) { return GetPercentInvisible() > 0.f; }
 
 	virtual void AddDecal( const Vector& rayStart, const Vector& rayEnd,
 		const Vector& decalCenter, int hitbox, int decalIndex, bool doTrace, trace_t& tr, int maxLODToDecal = ADDDECAL_TO_ALL_LODS );
@@ -342,8 +342,8 @@ public:
 	virtual void			ReapplyProvision( void ) { return; }
 
 	// ITFMvMBossProgressUser
-	virtual const char* GetBossProgressImageName() const OVERRIDE;
-	virtual float GetBossStatusProgress() const OVERRIDE;
+	virtual const char* GetBossProgressImageName() const;
+	virtual float GetBossStatusProgress() const;
 
 protected:
 	CNetworkVarEmbedded(	CAttributeContainerPlayer, m_AttributeManager );
@@ -379,13 +379,13 @@ public:
 
 	virtual bool		Weapon_CanSwitchTo( CBaseCombatWeapon *pWeapon );
 
-	virtual bool		Weapon_ShouldSetLast( CBaseCombatWeapon *pOldWeapon, CBaseCombatWeapon *pNewWeapon ) OVERRIDE;
-	virtual	bool		Weapon_Switch( C_BaseCombatWeapon *pWeapon, int viewmodelindex = 0 ) OVERRIDE;
-	virtual void 		SelectItem( const char *pstr, int iSubType = 0 ) OVERRIDE;
+	virtual bool		Weapon_ShouldSetLast( CBaseCombatWeapon *pOldWeapon, CBaseCombatWeapon *pNewWeapon );
+	virtual	bool		Weapon_Switch( C_BaseCombatWeapon *pWeapon, int viewmodelindex = 0 );
+	virtual void 		SelectItem( const char *pstr, int iSubType = 0 );
 
 	void				Weapon_PoseParamOverride( CTFWeaponBase *pOldWeapon, CTFWeaponBase *pNewWeapon );
 
-	virtual void		UpdateWearables() OVERRIDE;
+	virtual void		UpdateWearables();
 	CTFWearable			*GetEquippedWearableForLoadoutSlot( int iLoadoutSlot );
 	CBaseEntity			*GetEntityForLoadoutSlot( int iLoadoutSlot, bool bForceCheckWearable = false );			//Gets whatever entity is associated with the loadout slot (wearable or weapon)
 
@@ -411,7 +411,7 @@ public:
 	// Return true if we are a "mini boss" in Mann Vs Machine mode
 	bool IsMiniBoss( void ) const;
 	bool ShouldTauntHintIconBeVisible() const;
-	virtual bool IsHealthBarVisible( void ) const OVERRIDE;
+	virtual bool IsHealthBarVisible( void ) const;
 
 	bool	CanStartPhase( void );
 
@@ -943,8 +943,8 @@ public:
 
 	int GetSkinOverride() const { return m_iPlayerSkinOverride; }
 
-	virtual void ClientAdjustStartSoundParams( EmitSound_t &params ) override;
-	virtual void ClientAdjustStartSoundParams( StartSoundParams_t& params ) override;
+	virtual void ClientAdjustStartSoundParams( EmitSound_t &params );
+	virtual void ClientAdjustStartSoundParams( StartSoundParams_t& params );
 
 private:
 	void ClientAdjustVOPitch( int& pitch );
